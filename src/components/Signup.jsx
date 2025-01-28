@@ -64,7 +64,7 @@ function Signup() {
 
     return (
 
-        <div className="box mx-auto p-6 max-w-md bg-white shadow-2xl rounded-lg mt-10">
+        <div className="box mx-auto p-6 max-w-md bg-white shadow-2xl rounded-lg">
             <h2 className="text-xl font-bold">Stay organized and get things done — <span className='text-red-900'>sign up</span> to start your journey today!</h2>
 
 
@@ -73,7 +73,7 @@ function Signup() {
                     <img className='rounded blur-image' src="https://plus.unsplash.com/premium_photo-1661420059005-46f59e62e478?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2lnbiUyMHVwfGVufDB8fDB8fHww" alt="" width={900} />
                 </div>
 
-                <div>
+                <div className='userdata'>
 
                     <input
                         className="btn p-3 mt-5 rounded"
@@ -111,7 +111,7 @@ function Signup() {
                         onChange={handleChange}
                     />
                     <br />
-                    <br />
+                    
                     <button
                         className="btn p-3 rounded bg-white text-black text-lg font-bold"
                         onClick={handleSubmit}
@@ -119,13 +119,16 @@ function Signup() {
                         Sign Up
                     </button>
                     <br />
-                    <br />
+                    <p className='flex gap-4 text-center justify-center mb-5'>Already have an account?
                     <button
-                        className="btn mb-2 p-3 rounded bg-white text-black text-lg font-bold"
+                        className="text-black-500 font-bold"
                         onClick={Login}
                     >
                         Login
                     </button>
+
+                    </p>
+                   
                 </div>
 
 

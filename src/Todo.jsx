@@ -21,7 +21,7 @@ function TodoApp() {
                 setUserName(loggedInUser.user_metadata?.firstName);
                 setUserEmail(loggedInUser.email);
 
-                console.log(loggedInUser.email) 
+                console.log(loggedInUser.email)
 
                 const storedTasks = JSON.parse(localStorage.getItem(`tasks-${loggedInUser.email}`)) || [];
                 setTasks(storedTasks);
@@ -125,11 +125,11 @@ function TodoApp() {
     };
 
     return (
-        <div className="container mx-auto p-6 max-w-md bg-white shadow-2xl rounded-lg mt-10">
+        <div className="container mx-auto p-6 max-w-md bg-white shadow-2xl rounded-lg">
             <div
                 className="logout"
                 onClick={() => {
-                    localStorage.removeItem('supabaseUser'); 
+                    localStorage.removeItem('supabaseUser');
                     alert('You have logged out successfully');
                 }}
             >
@@ -143,66 +143,72 @@ function TodoApp() {
                 Welcome, {userEmail.split('@')[0]}!
             </h1>
 
-            <div className="mb-4 flex flex-col gap-4">
-                <input
-                    value={todo}
-                    onChange={(e) => setTodo(e.target.value)}
-                    className="w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="text"
-                    placeholder="Enter your task"
-                />
-                <input
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="date"
-                />
-                <button
-                    onClick={handleAddTask}
-                    className={`w-full py-2 text-white rounded-md ${editIndex !== null ? 'bg-green-900' : 'bg-gray-500'
-                        } hover:opacity-90`}
-                >
-                    {editIndex !== null ? 'Update Task' : 'Add Task'}
-                </button>
+            <div className='task_data mx-auto'>
+
+                <div className="mb-4 flex flex-col gap-4 text-center">
+                    <input
+                        value={todo}
+                        onChange={(e) => setTodo(e.target.value)}
+                        className="btn2  w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        type="text"
+                        placeholder="Enter your task"
+                    />
+                    <input
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="btn2 w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        type="date" placeholder="mm/dd/yyyy"
+                    />
+                    <button
+                        onClick={handleAddTask}
+                        className={`btn2 w-full py-2 text-white rounded-md ${editIndex !== null ? 'bg-green-900' : 'bg-gray-500'
+                            } hover:opacity-90`}
+                    >
+                        {editIndex !== null ? 'Update Task' : 'Add Task'}
+                    </button>
+                </div>
+
+                {isLoading ? (
+                    <img className='reload' src="./images/dbl_load2.svg" alt="reload" width={50} />
+                ) : (
+                    <div className="btn2 data space-y-4">
+                        {tasks.length > 0 ? (
+                            tasks.map((task, index) => (
+                                <div
+                                    className="flex items-center justify-between p-4 border rounded-md bg-gray-100"
+                                    key={task.id}
+                                >
+                                    <div>
+                                        <p className="text-gray-800 font-medium">{task.text}</p>
+                                        <p className="text-sm text-gray-500">
+                                            {new Date(task.date).toLocaleDateString()}
+                                        </p>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => handleEdit(index)}
+                                            className="edit_btn px-3 py-1 text-white rounded-md hover:opacity-90"
+                                        >
+                                            <i className="edit fa-regular fa-pen-to-square"></i>
+                                        </button>
+                                        <button
+                                            onClick={() => handleRemove(index)}
+                                            className="px-3 py-1 bg-red-500 text-white rounded-md hover:opacity-90"
+                                        >
+                                            <i className="fa-regular fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-center text-gray-600">No tasks available.</p>
+                        )}
+                    </div>
+                )}
+
             </div>
 
-            {isLoading ? (
-                <img className='reload' src="./images/dbl_load2.svg" alt="reload" width={50} />
-            ) : (
-                <div className="data space-y-4">
-                    {tasks.length > 0 ? (
-                        tasks.map((task, index) => (
-                            <div
-                                className="flex items-center justify-between p-4 border rounded-md bg-gray-100"
-                                key={task.id}
-                            >
-                                <div>
-                                    <p className="text-gray-800 font-medium">{task.text}</p>
-                                    <p className="text-sm text-gray-500">
-                                        {new Date(task.date).toLocaleDateString()}
-                                    </p>
-                                </div>
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={() => handleEdit(index)}
-                                        className="edit_btn px-3 py-1 text-white rounded-md hover:opacity-90"
-                                    >
-                                        <i className="edit fa-regular fa-pen-to-square"></i>
-                                    </button>
-                                    <button
-                                        onClick={() => handleRemove(index)}
-                                        className="px-3 py-1 bg-red-500 text-white rounded-md hover:opacity-90"
-                                    >
-                                        <i className="fa-regular fa-trash-can"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-center text-gray-600">No tasks available.</p>
-                    )}
-                </div>
-            )}
+
         </div>
     );
 }

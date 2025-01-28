@@ -33,44 +33,53 @@ function Login() {
     };
 
     return (
-        <div className='login mx-auto p-6 max-w-md bg-white shadow-2xl rounded-lg mt-10 flex'>
+        <div className='login max-w-md shadow-2xl rounded-lg'>
 
-            <div className='log_data ml-auto'>
+            <div className='log_data'>
+                
+                <div className='userdata'>
                 <h2 className='text-2xl font-bold'>Login</h2>
+                    <input
+                        className='btn1 p-3 mt-5 rounded'
+                        type="email"
+                        placeholder="Enter Your Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
 
-                <input
-                    className='btn1 p-3 mt-5 rounded'
-                    type="email"
-                    placeholder="Enter Your Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                    <input
+                        className='btn1 p-3 mt-5 rounded'
+                        type="password"
+                        placeholder="Enter Your Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
 
-                <input
-                    className='btn1 p-3 mt-5 rounded'
-                    type="password"
-                    placeholder="Enter Your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                    <br />
 
-                <br />
+                    <button
+                        className='btn1 p-3 rounded bg-white text-black text-lg font-bold'
+                        onClick=
+                        {handleSubmit}
+                    >
+                        Login
+                    </button>
+                    <br />
 
-                <button
-                    className='btn1 p-3 rounded bg-white text-black text-lg font-bold'
-                    onClick= 
-                        {handleSubmit}  
-                >
-                    Login
-                </button>
-                <br />
+                    <p className='flex gap-4'>Don't have an account?
 
-                <button
-                    className='btn1 p-3 rounded bg-white text-black text-lg font-bold'
-                    onClick={signup}
-                >
-                    Sign UP
-                </button>
+                        <button
+                            className='text-black-500 font-bold'
+                            onClick={signup}
+                        >
+                            Sign UP
+                        </button>
+                    </p>
+
+                </div>
+
+
+
             </div>
         </div>
     );

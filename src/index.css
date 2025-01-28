@@ -7,83 +7,127 @@
    background-repeat: no-repeat;
    background-position: center;
    background-size: cover;
-   overflow: auto;
-   max-height: 80vh;
+   /* overflow: auto; */
+   min-height: 100vh;
+   max-width: 100%;
 }
 
 .edit_btn {
    background-color: rgb(90, 75, 2);
 }
-.reload{
-  margin: 0 auto;
+
+.reload {
+   margin: 0 auto;
 }
-h1{
-   text-shadow: 0 0 10px red, 0 0 20px orange;
+
+h1 {
+   text-shadow: 0 0 10px rgb(234, 225, 225), 0 0 20px rgb(205, 199, 187);
 }
-h2{
+
+h2 {
    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
-.box{
-   max-width: 70%;
+
+.box {
+   max-width: 100%;
+   /* min-height: 100%; */
    align-items: center;
    text-align: center;
    background-color: white;
 }
-.login{
-min-height: 70vh;
-   max-width: 55%;
+
+.login {
+   align-items: center;
+   text-align: center;
+   background-color: white;
+   max-width: 100%;
+   /* min-height: 100%; */
+
+}
+
+.log_data {
+   display: flex;
+   flex-direction: column;
+   /* justify-content: center; */
+   align-items: center;
    background-repeat: no-repeat;
    background-position: center;
    background-size: cover;
-   overflow: auto;
+   /* max-width: 100%; */
+   min-height: 100vh;
    background-image: url(https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGxvZ2lufGVufDB8fDB8fHww);
 }
-.log_data{
+
+.userdata {
    display: flex;
    flex-direction: column;
- left: 0;
- top: 0;
- 
+   padding: 20px;
 }
 
-.details{
+
+.details {
    display: flex;
-border-radius: 3px;
+gap: 20px;
+   border-radius: 3px;
    align-items: center;
-  background-color: rgb(125, 122, 122);
-  max-width: 100%;
-  min-height: 70vh; 
+   justify-content: center;
+   background-color: rgb(173, 171, 171);
 }
+
 .blur-image {
    filter: blur(1px);
    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-   height: 430px;
+   height: 420px;
+   width: 500px;
+   
 }
-.btn{
-   width:230px;
+
+.btn {
+   max-width: 100%;
+   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 }
-.btn1{
+
+.btn1 {
    width: 300px;
 }
-.logout{
+
+.task_data {
+   max-width: 40%;
+
+}
+
+.btn2 {
+   max-width: 100%;
+}
+
+
+.logout {
    display: flex;
    justify-content: flex-end;
 }
 
 @media only screen and (max-width: 767px) {
 
-.box{
-   max-width: 100%;
-}
-.details{
-   display: flex;
-   flex-direction: column;
-}
-.btn{
-margin-bottom: 10px;
-}
-.login{
-   max-width: 100%;
-}
+   .box {
+      max-width: 100%;
+   }
 
+   .details {
+      display: flex;
+      flex-direction: column;
+   }
+
+  
+   .blur-image{
+      max-width: 100%;
+   }
+
+   .login {
+      max-width: 100%;
+   }
+
+   .task_data {
+      max-width: 100%;
+
+   }
 }
