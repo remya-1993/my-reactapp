@@ -64,10 +64,20 @@ h2 {
    padding: 20px;
 }
 
+.userdata1 {
+   display: flex;
+   flex-direction: column;
+   padding: 20px;
+   margin: auto;
+   border: 1px solid rgb(173, 171, 171);
+   border-radius: 5px;
+  
+}
+
 
 .details {
    display: flex;
-gap: 20px;
+   gap: 20px;
    border-radius: 3px;
    align-items: center;
    justify-content: center;
@@ -79,7 +89,7 @@ gap: 20px;
    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
    height: 420px;
    width: 500px;
-   
+
 }
 
 .btn {
@@ -88,7 +98,7 @@ gap: 20px;
 }
 
 .btn1 {
-   width: 300px;
+   max-width: 100%;
 }
 
 .task_data {
@@ -117,8 +127,11 @@ gap: 20px;
       flex-direction: column;
    }
 
-  
-   .blur-image{
+   .userdata1 {
+      max-width: 100%;
+   }
+
+   .blur-image {
       max-width: 100%;
    }
 

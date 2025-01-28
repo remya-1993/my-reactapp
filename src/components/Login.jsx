@@ -36,9 +36,9 @@ function Login() {
         <div className='login max-w-md shadow-2xl rounded-lg'>
 
             <div className='log_data'>
-                
-                <div className='userdata'>
-                <h2 className='text-2xl font-bold'>Login</h2>
+
+                <div className='userdata1'>
+                    <h2 className='text-2xl font-bold'>Login</h2>
                     <input
                         className='btn1 p-3 mt-5 rounded'
                         type="email"
