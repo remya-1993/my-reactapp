@@ -85,7 +85,7 @@ h2 {
 }
 
 .blur-image {
-   filter: blur(1px);
+  
    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
    height: 420px;
    width: 500px;
