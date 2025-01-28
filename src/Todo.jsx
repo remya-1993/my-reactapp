@@ -157,7 +157,7 @@ function TodoApp() {
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
                         className="btn2 w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        type="date" placeholder="mm/dd/yyyy"
+                        type="date" placeholder="select your date"
                     />
                     <button
                         onClick={handleAddTask}
