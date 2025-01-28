@@ -156,9 +156,20 @@ function TodoApp() {
                     <input
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
+                        onFocus={(e) => e.target.setAttribute('placeholder', '')}
+                        onBlur={(e) => {
+                            if (!e.target.value) e.target.setAttribute('placeholder', 'Select your date');
+                        }}
+                        placeholder="Select your date"
+                        className="btn2 w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        type="date"
+                    />
+                    {/* <input
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
                         className="btn2 w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         type="date" placeholder="select your date"
-                    />
+                    /> */}
                     <button
                         onClick={handleAddTask}
                         className={`btn2 w-full py-2 text-white rounded-md ${editIndex !== null ? 'bg-green-900' : 'bg-gray-500'
