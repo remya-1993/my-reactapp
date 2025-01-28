@@ -13,13 +13,6 @@ function Login() {
         navigate('/');
     };
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setIsLoading(false)
-    //     }, 5000);
-
-    // }, [])
-
 
     const handleSubmit = async () => {
 
@@ -60,7 +53,7 @@ function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-    
+
                 <br />
 
                 <button
@@ -68,7 +61,7 @@ function Login() {
                     onClick= 
                         {handleSubmit}  
                 >
-                    Submit
+                    Login
                 </button>
                 <br />
 

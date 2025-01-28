@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
+import Login from './Login';
 
 function Signup() {
     const [formData, setFormData] = useState({
@@ -12,6 +13,10 @@ function Signup() {
     });
 
     const navigate = useNavigate();
+    const Login = () => {
+        navigate('/login');
+    };
+
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -111,7 +116,15 @@ function Signup() {
                         className="btn p-3 rounded bg-white text-black text-lg font-bold"
                         onClick={handleSubmit}
                     >
-                        Submit
+                        Sign Up
+                    </button>
+                    <br />
+                    <br />
+                    <button
+                        className="btn mb-2 p-3 rounded bg-white text-black text-lg font-bold"
+                        onClick={Login}
+                    >
+                        Login
                     </button>
                 </div>
 
