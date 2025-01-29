@@ -69,9 +69,9 @@ function Signup() {
 
 
             <div className='details mt-5'>
-                <div className='img'>
+                {/* <div className='img'>
                     <img className='rounded blur-image' src="https://plus.unsplash.com/premium_photo-1661420059005-46f59e62e478?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2lnbiUyMHVwfGVufDB8fDB8fHww" alt="" width={900} />
-                </div>
+                </div> */}
 
                 <div className='userdata'>
 
@@ -119,9 +119,9 @@ function Signup() {
                         Sign Up
                     </button>
                     <br />
-                    <p className='flex gap-4 text-center justify-center mb-5'>Already have an account?
+                    <p className='flex gap-4 text-center justify-center'>Already have an account?
                     <button
-                        className="text-black-500 font-bold"
+                        className="text-black-900 font-bold"
                         onClick={Login}
                     >
                         Login
