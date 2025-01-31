@@ -2,148 +2,210 @@
 @tailwind components;
 @tailwind utilities;
 
-.container {
-   background-image: url(https://images.unsplash.com/photo-1578852612716-854e527abf2e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHRvJTIwZG98ZW58MHx8MHx8fDA%3D);
-   background-repeat: no-repeat;
-   background-position: center;
-   background-size: cover;
-   /* overflow: auto; */
-   min-height: 100vh;
-   max-width: 100%;
-}
-
-.edit_btn {
-   background-color: rgb(90, 75, 2);
-}
-
 .reload {
    margin: 0 auto;
 }
 
-h1 {
-   text-shadow: 0 0 10px rgb(234, 225, 225), 0 0 20px rgb(205, 199, 187);
+.form {
+   min-height: 100vh;
+   background-size: 767px;
+   background-color: #09122C;
 }
 
-h2 {
-   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+.head {
+   font-family: sans-serif;
+  
 }
 
 .box {
-   max-width: 100%;
-   /* min-height: 100%; */
-   align-items: center;
-   text-align: center;
-   background-color: white;
-}
-
-.login {
-   align-items: center;
-   text-align: center;
-   background-color: white;
-   max-width: 100%;
-   /* min-height: 100%; */
-
-}
-
-.log_data {
-   display: flex;
-   flex-direction: column;
-   /* justify-content: center; */
-   align-items: center;
-   background-repeat: no-repeat;
-   background-position: center;
-   background-size: cover;
-   /* max-width: 100%; */
    min-height: 100vh;
-   background-image: url(https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGxvZ2lufGVufDB8fDB8fHww);
+   background-image: url(../public/images/bg_to_do.png);
+   background-size: 767px;
+   background-repeat: no-repeat;
+   background-position: left bottom;
+   background-color: #872341;
+}
+
+.box1 {
+   min-height: 100vh;
+   /* background-image: url(../public/images/bg_to_do.png); */
+   background-size: 767px;
+   background-repeat: no-repeat;
+   background-position: left bottom;
+   /* background-color: #09122C; */
+   background-color: #872341;
+}
+
+.sign-up-wrapper {
+   border-radius: 15px;
+   max-width: 767px;
+   min-height: 75vh;
+   background-color: #09122C;
+}
+
+.sign-up-wrapper1 {
+   border-radius: 15px;
+   max-width: 460px;
+   min-height: 75vh;
+   background-color: #09122C;
+}
+
+.wrapper {
+   border-radius: 5px;
+   max-width: 400px;
+   min-height: 75vh;
+   padding: 15px;
+   /* background-color: white; */
+
+}
+
+.formdata input {
+   max-width: 100%;
+   width: 290px;
+   border: 1px solid #d9d9d9;
+   font-size: 14px;
+   height: 45px;
+   border-radius: 6px;
+   padding: 3px 8px;
+   margin-bottom: 10px;
+}
+
+.formdata textarea {
+   max-width: 100%;
+   width: 290px;
+   border: 1px solid #d9d9d9;
+   font-size: 14px;
+   border-radius: 6px;
+   padding: 3px 8px;
+}
+
+.formdata button {
+   max-width: 100%;
+   width: 290px;
+   border: 1px solid #d9d9d9;
+   font-size: 14px;
+   border-radius: 6px;
+   height: 45px;
+   background-color:  #09122C;
+   color: white;
 }
 
 .userdata {
-   display: flex;
-   flex-direction: column;
-   padding: 20px;
+   background-color: #f5f5f5;
+   min-height: 75vh;
 }
 
-.userdata1 {
-   display: flex;
-   flex-direction: column;
-   padding: 20px;
-   margin: auto;
-   border: 1px solid rgb(173, 171, 171);
+.userdata input {
+   width: 100%;
+   border: 1px solid #d9d9d9;
+   font-size: 14px;
+   height: 45px;
+   border-radius: 6px;
+   padding: 3px 8px;
+   margin-bottom: 10px;
+}
+
+.userdata button {
+   height: 45px;
+   border-radius: 6px;
+   background-color: #09122C;
+}
+
+.font-14 {
+   font-size: 14px;
+}
+
+.pointer {
+   cursor: pointer;
+}
+
+.add {
+   background-color: #4a4a4b;
+   color: white;
+}
+.list{
+   border: 1px solid #ffffff1a
+}
+
+.task {
+   padding: 10px;
+   margin: 10px 0;
    border-radius: 5px;
-  
-}
-
-
-.details {
    display: flex;
-   gap: 20px;
-   border-radius: 3px;
+   justify-content: space-between;
    align-items: center;
-   justify-content: center;
-   /* background-color: rgb(173, 171, 171); */
-   background-repeat: no-repeat;
-   background-position: center;
-   background-size: cover;
-   min-height: 70vh;
-   background-image: url(https://plus.unsplash.com/premium_photo-1661420059005-46f59e62e478?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2lnbiUyMHVwfGVufDB8fDB8fHww);
-}
-
-/* .blur-image {
+   border: 1px solid #09122C;
+   border: 1px solid #ffffff1a
   
-   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-   height: 420px;
-   width: 500px;
-
-} */
-
-.btn {
-   max-width: 100%;
-   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+   
 }
 
-.btn1 {
-   max-width: 100%;
+.priority-tag {
+   padding: 3px 8px;
+   border-radius: 4px;
+   font-size: 0.8rem;
 }
 
-.task_data {
-   max-width: 40%;
+.high {
+   background-color: #ffcccc;
+   /* Light Red */
+   border-left: 4px solid #ff0000;
+}
+
+.medium {
+   background-color: #ffffcc;
+   /* Light Yellow */
+   border-left: 4px solid #ffcc00;
+}
+
+.low {
+   background-color: #ccffcc;
+   /* Light Green */
+   border-left: 4px solid #00cc00;
+}
+
+.task button {
+   margin-left: 5px;
+   cursor: pointer;
+   background: none;
+   border: none;
+   font-size: 16px;
+}
+
+.completed {
+   text-decoration: line-through;
+   opacity: 0.6;
+}
+
+.checkbox {
+   width: 15px;
+   height: 15px;
 
 }
 
-.btn2 {
-   max-width: 100%;
+.feedback-list {
+   align-items: center;
+   max-height: 200px;
+   overflow: auto;
+   border-radius: 6px;
+   font-size: 12px;
 }
-p{
-   margin-bottom: 50px;
-}
-
-.logout {
+.task_feature {
    display: flex;
-   justify-content: flex-end;
+   justify-content: space-between;
+
 }
 
-@media only screen and (max-width: 767px) {
-
-   .box {
-      max-width: 100%;
-   }
-
-   .details {
-      display: flex;
-      flex-direction: column;
-   }
-
-   .userdata1 {
-      max-width: 100%;
-   }
-
-   .login {
-      max-width: 100%;
-   }
-
-   .task_data {
-      max-width: 100%;
-
-   }
+::-webkit-scrollbar{
+   width: 5px;
+}
+::-webkit-scrollbar-track{
+   background-color: #2b2b2c;
+}
+::-webkit-scrollbar-thumb{
+   background: linear-gradient(#2b2441, #121865);
+   border-radius: 10px;
+}
+.log_img{
+   width: 20px;
 }
