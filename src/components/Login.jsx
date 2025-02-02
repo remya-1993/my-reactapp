@@ -50,7 +50,7 @@ function Login() {
                         </div>
 
                         <div className='col-12 col-md-6 col-lg-6'>
-                            <div className='userdata p-4 p-lg-5 h-100 d-flex justify-content-center flex-column'>
+                            <div className='userdata p-4 p-lg-5 h-100 d-flex flex-column'>
                                 <label className='fw-medium font-14 pb-1' htmlFor="">Email</label>
                                 <div>
                                     <input

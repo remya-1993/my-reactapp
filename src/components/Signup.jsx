@@ -104,7 +104,7 @@ function Signup() {
                                 </h2>
 
                                 <div>
-                                    <h3 className="mt-4 fs-6 font-medium underline">User Feedback:</h3>
+                                    <h3 className="mt-5 fs-6 font-medium underline">User Reviews:</h3>
                                     <ul className="mt-1 feedback-list p-0 pe-3">
                                         {feedbacks.length > 0 ? (
                                             feedbacks.map((feedback, index) => (
@@ -118,7 +118,7 @@ function Signup() {
                                     </ul>
                                 </div>
 
-                                <div className="signup-container mt-4">
+                                <div className="signup-container mt-5">
                                   
                                   <p className='text-danger'>Total TO DO Users: {totalUsers}</p>
                                   <form>{}</form>
@@ -127,7 +127,7 @@ function Signup() {
                             </div>
                         </div>
                         <div className="col-12 col-md-6 col-lg-6">
-                            <div className='userdata p-4 p-lg-5 h-100 d-flex justify-content-center flex-column'>
+                            <div className='userdata p-4 p-lg-5 h-100 d-flex flex-column'>
 
                                 <label className='fw-medium font-14 pb-1'>Name</label>
                                 <input type="text" id="firstName" placeholder="Enter Your Name" value={formData.firstName} onChange={handleChange} />
