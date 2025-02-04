@@ -14,6 +14,13 @@ function Signup() {
     const [feedbacks, setFeedbacks] = useState([]); // Store feedback
     const navigate = useNavigate();
     const [totalUsers, setTotalUsers] = useState(0);
+    const [topUsers, setTopUsers] = useState(0);
+
+
+    useEffect(() => {
+        fetchTopUsers();
+    }, []);
+
 
     useEffect(() => {
         const fetchUsersCount = async () => {
@@ -47,6 +54,34 @@ function Signup() {
 
         fetchFeedback();
     }, []);
+
+
+    const fetchTopUsers = async () => {
+        const now = new Date();
+        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+        const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
+
+        const { data, error } = await supabase
+            .from("users")
+            .select("user_email, coins")
+            .gte("last_updated", firstDayOfMonth)
+            .lte("last_updated", lastDayOfMonth)
+            .order("coins", { ascending: false }) // Descending order (highest coins first)
+            .limit(5); // Get top 5 users
+
+        if (error) {
+            console.error("Error fetching top users:", error.message);
+            return;
+        }
+
+        setTopUsers(data); // Update state with top users
+    };
+
+
+
+
+
+
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -103,13 +138,40 @@ function Signup() {
                                     Stay organized and get things done — <span className='text-danger'>sign up</span> to start your journey today!
                                 </h2>
 
+                                <div className="leaderboard mt-5">
+                                    <h2 className='text-xl'>🏆 Top Users This Month</h2>
+                                    {topUsers.length > 0 ? (
+                                        <ul>
+                                            {topUsers.map((user, index) => (
+                                                <li key={index}>
+                                                    {index + 1}. {user.user_email} - {user.coins} coins
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p>No top users yet!</p>
+                                    )}
+                                </div>
+
+
+
+                                <div className="signup-container mt-3">
+
+                                    <p className='text-danger'>Active Users: {totalUsers}</p>
+                                    <form>{ }</form>
+                                </div>
+
                                 <div>
-                                    <h3 className="mt-5 fs-6 font-medium underline">User Reviews:</h3>
+                                    <h3 className="mt-4 fs-6 font-medium underline">User Reviews:</h3>
                                     <ul className="mt-1 feedback-list p-0 pe-3">
                                         {feedbacks.length > 0 ? (
                                             feedbacks.map((feedback, index) => (
                                                 <li key={index} className="list px-2 py-1 rounded mt-1">
-                                                    <strong>{feedback.name}</strong> : {feedback.message}
+
+                                                    <strong className='feedMessage'>{feedback.message}</strong>
+                                                    <div className='feedName'>- {feedback.name}</div>
+
+
                                                 </li>
                                             ))
                                         ) : (
@@ -117,12 +179,6 @@ function Signup() {
                                         )}
                                     </ul>
                                 </div>
-
-                                <div className="signup-container mt-5">
-                                  
-                                  <p className='text-danger'>Total TO DO Users: {totalUsers}</p>
-                                  <form>{}</form>
-                              </div>
 
                             </div>
                         </div>
@@ -152,6 +208,9 @@ function Signup() {
                                 <p className='fs-6 fw-light text-center'>
                                     Write your suggestions! <a className='text-dark fw-bold pointer ms-3' href="" onClick={() => navigate("/feedbackform")}>Feedback</a>
                                 </p>
+
+
+
 
                             </div>
                         </div>

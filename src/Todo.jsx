@@ -18,11 +18,11 @@ function TodoApp() {
     useEffect(() => {
         const fetchUserData = async () => {
             const loggedInUser = JSON.parse(localStorage.getItem('supabaseUser'));
-    
+
             if (loggedInUser) {
                 setUserEmail(loggedInUser.email);
-    
-                setCoins(Number(localStorage.getItem('userCoins')) || 0); 
+
+                setCoins(Number(localStorage.getItem('userCoins')) || 0);
 
                 // Fetch the latest coin balance from Supabase
                 const { data: userData, error: userError } = await supabase
@@ -30,21 +30,21 @@ function TodoApp() {
                     .select('coins')
                     .eq('user_email', loggedInUser.email)
                     .single();
-    
+
                 if (!userError) {
                     const updatedCoins = userData?.coins || 0;
                     setCoins(updatedCoins); // Update state with correct coins
                     localStorage.setItem('userCoins', updatedCoins.toString()); // Store in localStorage
                 } else {
-                    console.error('Error fetching coins:', userError.message);
+                    // console.error('Error fetching coins:', userError.message);
                 }
-    
+
                 // Fetch tasks
                 const { data: tasksFromDB, error: taskError } = await supabase
                     .from('tasks')
                     .select('*')
                     .eq('user_email', loggedInUser.email);
-    
+
                 if (!taskError) {
                     setTasks(tasksFromDB || []);
                 } else {
@@ -53,10 +53,10 @@ function TodoApp() {
             } else {
                 console.error('No logged-in user found.');
             }
-    
+
             setIsLoading(false);
         };
-    
+
         fetchUserData();
     }, []);
 
@@ -92,75 +92,145 @@ function TodoApp() {
         fetchUserAndTasks();
     }, []);
 
-
     const saveTasksToLocalStorage = (updatedTasks) => {
         localStorage.setItem(`tasks-${userEmail}`, JSON.stringify(updatedTasks));
     };
 
+
     const handleTaskCompletion = async (taskIndex) => {
-        const task = tasks[taskIndex];
-        let coinBonus = 0;
+        try {
+            const task = tasks[taskIndex];
+            if (!task) {
+                console.error("Invalid task index");
+                return;
+            }
 
-        // Determine coin bonus based on task priority
-        if (task.priority === 'high') {
-            coinBonus = 40; // Important task
-        } else if (task.priority === 'medium') {
-            coinBonus = 20; // Minor important task
-        } else if (task.priority === 'low') {
-            coinBonus = 10; // Not important task
-        }
+            let coinBonus = 0;
 
-        // Update task completion in the tasks array
-        const updatedTasks = [...tasks];
-        updatedTasks[taskIndex].completed = true;
-        setTasks(updatedTasks);
+            // Assign coin bonus based on task priority
+            if (task.priority === "high") {
+                coinBonus = 40;
+            } else if (task.priority === "medium") {
+                coinBonus = 20;
+            } else if (task.priority === "low") {
+                coinBonus = 10;
+            }
 
-        // Update task completion in Supabase
-        const { error: updateError } = await supabase
-            .from('tasks')
-            .update({ completed: true })
-            .eq('id', task.id);
+            // Clone tasks array and toggle completion status
+            const updatedTasks = [...tasks];
+            const isTaskCompleted = !task.completed; // Toggle completion status
+            updatedTasks[taskIndex].completed = isTaskCompleted;
+            updatedTasks.sort((a, b) => {
+                const priorityOrder = { high: 1, medium: 2, low: 3 };
+                const now = new Date(); // Get current date and time
 
-        if (updateError) {
-            console.error('Error updating task completion:', updateError.message);
-        } else {
-            // Update coins in Supabase
+                // Convert task due dates to Date objects
+                const dueDateA = new Date(a.dueDate);
+                const dueDateB = new Date(b.dueDate);
+                const isOverdueA = dueDateA < now && !a.completed;
+                const isOverdueB = dueDateB < now && !b.completed;
+
+                // Prioritize overdue tasks first
+                if (isOverdueA !== isOverdueB) {
+                    return isOverdueA ? -1 : 1;
+                }
+
+                // Then prioritize incomplete tasks before completed ones
+                if (a.completed !== b.completed) {
+                    return a.completed ? 1 : -1;
+                }
+
+                // Finally, sort by priority (high -> medium -> low)
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            });
+
+            setTasks(updatedTasks);
+
+            // Update task completion in Supabase
+            const { error: updateError } = await supabase
+                .from("tasks")
+                .update({ completed: isTaskCompleted })
+                .eq("id", task.id);
+
+            if (updateError) {
+                console.error("Error updating task completion:", updateError.message);
+                return;
+            }
+
+            // Fetch current user's coin balance
             const { data: userData, error: coinsError } = await supabase
-                .from('users')
-                .select('coins')
-                .eq('user_email', userEmail);
+                .from("users")
+                .select("coins")
+                .eq("user_email", userEmail);
+
+            console.log("Fetched user data:", userData, "Error:", coinsError);
 
             if (coinsError) {
-                console.error('Error fetching coins:', coinsError.message);
-            } else {
-                const newCoins = userData.length > 0 ? userData[0].coins + coinBonus : coinBonus;
+                console.error("Error fetching coins:", coinsError.message);
+                return;
+            }
 
-                // Update coins in Supabase
-                const { error: coinsUpdateError } = await supabase
-                    .from('users')
-                    .upsert({ user_email: userEmail, coins: newCoins });
+            // Ensure userData exists and has at least one record
 
-                if (coinsUpdateError) {
-                    console.error('Error updating coins in Supabase:', coinsUpdateError.message);
-                } else {
-                    // Update coins in localStorage
-                    localStorage.setItem('userCoins', newCoins.toString());
-                    setCoins(newCoins); // Update the state variable for coins
-                    alert(`You have earned ${coinBonus} coins!`);
+            if (!userData || userData.length === 0) {
+                console.warn("User not found, inserting default user with 0 coins.");
+                const { error: insertError } = await supabase
+                    .from("users")
+                    .insert([{ user_email: userEmail, coins: 0 }]);
+
+                if (insertError) {
+                    console.error("Error inserting new user:", insertError.message);
+                    return;
                 }
             }
+
+            let newCoins = userData[0]?.coins || 0; // Ensure newCoins is always a number
+
+            // Add or remove coins based on task completion status
+            if (isTaskCompleted) {
+                newCoins += coinBonus;
+                console.log(`✅ Task completed! New coin balance: ${newCoins}`);
+                alert(`🎉 You have earned ${coinBonus} coins!`);
+            } else {
+                newCoins -= coinBonus;
+                if (newCoins < 0) newCoins = 0; // Prevent negative coins
+                console.log(`❌ Task unchecked! New coin balance: ${newCoins}`);
+                alert(`⚠️ You have lost ${coinBonus} coins.`);
+            }
+
+            // Update coins in Supabase
+            const { error: coinsUpdateError } = await supabase
+                .from("users")
+                .update({ coins: newCoins })
+                .eq("user_email", userEmail);
+
+            if (coinsUpdateError) {
+                console.error("Error updating coins in Supabase:", coinsUpdateError.message);
+                return;
+            }
+
+            // Update local storage and state
+            localStorage.setItem("userCoins", newCoins.toString());
+            setCoins(newCoins);
+
+        } catch (error) {
+            console.error("Unexpected error:", error);
         }
     };
 
 
 
-    const handleAddTask = async () => {
+    const handleAddTask = async (e) => {
+        e.preventDefault();
+
+        if (!todo || !date) {
+            alert('Task & Date are required!');
+            return;
+        }
+
+        let newTasks = [...tasks];
+
         if (todo && date) {
-            if (!todo || !date) return alert('Task & Date are required!');
-
-            let newTasks = [...tasks];
-
-
             if (editIndex !== null) {
                 const updatedTask = { ...tasks[editIndex], text: todo, date, priority };
 
@@ -246,8 +316,12 @@ function TodoApp() {
                 <div className="sign-up-wrapper1 mx-auto mt-2 p-6 max-w-md shadow-2xl rounded-lg">
                     <div
                         className="logout"
-                        onClick={() => {
+                        onClick={async () => {
                             localStorage.removeItem('supabaseUser');
+                            localStorage.removeItem('userCoins');
+
+                            setCoins(0);
+
                             alert('You have logged out successfully');
                         }}
                     >
@@ -279,6 +353,7 @@ function TodoApp() {
                                 dateFormat="yyyy-MM-dd"
                             />
 
+                            <label className='text-white text-left lh-1' htmlFor="">How to prioritize your task?</label>
                             <select value={priority} onChange={(e) => setPriority(e.target.value)}
                                 className="btn2 w-full px-4 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-black-500">
                                 <option value="high">🔥 Important</option>
@@ -306,51 +381,54 @@ function TodoApp() {
                                 <h3 className="text-center text-white text-xl font-bold">💰 Coins: {coins}</h3>
 
                                 {tasks.length > 0 ? (
+
                                     tasks.map((task, index) => (
                                         <div
-
-                                            key={task.id} className={`task ${task.completed ? 'completed' : ''}`}
-
+                                            key={task.id}
+                                            className={`task ${task.completed ? 'completed' : ''} ${new Date(task.date) < new Date() && !task.completed ? 'overdue' : ''}`}
                                         >
-
                                             <div>
-                                                <input
-                                                    className='checkbox'
-                                                    type="checkbox"
-                                                    checked={task.completed}
-                                                    onChange={() => handleTaskCompletion(index)} />
-
-                                                <p className='text-white'>{task.text} - {new Date(task.date).toLocaleDateString()}</p>
-
+                                                <div className='flex gap-4'>
+                                                    <input
+                                                        className='checkbox'
+                                                        type="checkbox"
+                                                        checked={task.completed}
+                                                        onChange={() => handleTaskCompletion(index)}
+                                                    />
+                                                    <p className='text-white'>
+                                                        {task.text} - {new Date(task.date).toLocaleDateString()}
+                                                        {new Date(task.date) < new Date() && !task.completed && <span className="warning"> ⚠️ Overdue!</span>}
+                                                    </p>
+                                                </div>
 
                                                 <div className='task_feature'>
                                                     <span className={`priority-tag ${task.priority}`}>
                                                         {task.priority === 'high' ? '🔥 Important' : task.priority === 'medium' ? '⭐ Minor Important' : '✅ Not Important'}
                                                     </span>
-                                                    <div className='flex gap-2'>
-                                                        <button onClick={() => handleEdit(index)}> <i className="text-white edit fa-regular fa-pen-to-square"></i></button>
-                                                        <button onClick={() => handleRemove(index)}> <i className="text-white trash fa-solid fa-trash"></i></button>
+                                                    <div className='flex gap-4'>
+                                                        <button onClick={() => handleEdit(index)}>
+                                                            <i className="text-white edit fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button onClick={() => handleRemove(index)}>
+                                                            <i className="text-white trash fa-solid fa-trash"></i>
+                                                        </button>
                                                     </div>
-
                                                 </div>
-
                                             </div>
-
-                                
                                         </div>
                                     ))
                                 ) : (
-                                    <p className="text-center text-gray-600">No tasks available.</p>
+                        <p className="text-center text-gray-600">No tasks available.</p>
                                 )}
-                            </div>
+                    </div>
                         )}
 
-                    </div>
-
-
                 </div>
+
+
             </div>
         </div>
+        </div >
     );
 }
 
