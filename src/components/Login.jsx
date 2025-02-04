@@ -7,7 +7,6 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
 
     const signup = () => {
         navigate('/');
@@ -42,7 +41,7 @@ function Login() {
                     <div className='row align-items-center h-100"'>
                         <div className='col-12 col-md-6 col-lg-6'>
                             <div className='p-4 p-lg-5'>
-                                {/* <h1 className='p-lg-5 p-md-4 p-4 text-white'>Login</h1> */}
+                                
                                 <h2 className="fs-4 font-normal lh-3 text-white">Secure your journey with a simple login.</h2>
                                 <div className=' text-danger font-bold mt-3 fs-2'>Welcome back!..</div>
                             </div>
@@ -90,12 +89,7 @@ function Login() {
                                         Sign Up
                                     </a>
 
-                                    {/* <button
-                                        className='text-black-500 font-bold'
-                                        onClick={signup}
-                                    >
-                                        Sign UP
-                                    </button> */}
+
                                 </p>
                             </div>
 

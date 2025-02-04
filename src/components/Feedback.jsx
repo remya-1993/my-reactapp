@@ -4,12 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 function Feedbackform() {
-    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [feedbacks, setFeedbacks] = useState([]);
-    const [user, setUser] = useState(null);
 
 
     useEffect(() => {
@@ -17,12 +15,10 @@ function Feedbackform() {
         setFeedbacks(savedFeedbacks);
     }, []);
 
-    // Save feedback to localStorage
     const saveToLocalStorage = (newFeedbacks) => {
         localStorage.setItem("feedbacks", JSON.stringify(newFeedbacks));
     };
 
-    // Handle Form Submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -33,14 +29,13 @@ function Feedbackform() {
 
         const newFeedback = { name, email, message };
 
-        // Save feedback to local state and localStorage
         const updatedFeedbacks = [...feedbacks, newFeedback];
         setFeedbacks(updatedFeedbacks);
         saveToLocalStorage(updatedFeedbacks);
 
-        // Save feedback to Supabase
+
         const { error } = await supabase
-            .from("feedbacks") // Table name in Supabase
+            .from("feedbacks")
             .insert([{ name, email, message }]);
 
         if (error) {
@@ -67,7 +62,7 @@ function Feedbackform() {
                                 className="logout"
                                 onClick={() => {
                                     localStorage.removeItem('supabaseUser');
-                                    
+
                                 }}
                             >
                                 <Link to="/login">
@@ -88,8 +83,8 @@ function Feedbackform() {
                                 <label className='fw-normal font-14 pb-1' htmlFor="">Email</label>
                                 <div>
                                     <input className='p-2 mt-1 border-1 rounded' type="email" placeholder='Enter your Email' value={email}
-                                        onChange={(e) => setEmail(e.target.value)} 
-                                        
+                                        onChange={(e) => setEmail(e.target.value)}
+
                                     />
                                 </div>
                                 <label className='fw-normal font-14 pb-1' htmlFor="">Message</label>
@@ -110,13 +105,13 @@ function Feedbackform() {
                                 </div>
                             </form>
 
-                            {/* Display Submitted Feedback */}
+                          
                             <h3 className='mt-3 fs-4'>Users Feedback:</h3>
                             <ul className='mt-1'>
                                 {feedbacks.length > 0 ? (
                                     feedbacks.map((feedback, index) => (
                                         <li key={index} className='p-2 border mx-auto rounded mt-1'>
-                                           <span className='font-bold' >{feedback.name}</span>  ({feedback.email}): {feedback.message}
+                                            <span className='font-bold' >{feedback.name}</span>  ({feedback.email}): {feedback.message}
                                         </li>
                                     ))
                                 ) : (

@@ -11,7 +11,7 @@ function Signup() {
         password: '',
     });
 
-    const [feedbacks, setFeedbacks] = useState([]); // Store feedback
+    const [feedbacks, setFeedbacks] = useState([]); 
     const navigate = useNavigate();
     const [totalUsers, setTotalUsers] = useState(0);
     const [topUsers, setTopUsers] = useState(0);
@@ -25,9 +25,8 @@ function Signup() {
     useEffect(() => {
         const fetchUsersCount = async () => {
             const { data, error } = await supabase
-                .from("todo") // Table where user data is stored
-                .select("id", { count: "exact" }); // Count users
-
+                .from("todo") 
+                .select("id", { count: "exact" }); 
             if (error) {
                 console.error("Error fetching user count:", error);
             } else {
@@ -43,7 +42,7 @@ function Signup() {
         const fetchFeedback = async () => {
             const { data, error } = await supabase
                 .from('feedbacks')
-                .select('*'); // Fetch all feedback
+                .select('*'); 
 
             if (error) {
                 console.error("Error fetching feedback:", error.message);
@@ -66,21 +65,16 @@ function Signup() {
             .select("user_email, coins")
             .gte("last_updated", firstDayOfMonth)
             .lte("last_updated", lastDayOfMonth)
-            .order("coins", { ascending: false }) // Descending order (highest coins first)
-            .limit(5); // Get top 5 users
+            .order("coins", { ascending: false })
+            .limit(3); 
 
         if (error) {
             console.error("Error fetching top users:", error.message);
             return;
         }
 
-        setTopUsers(data); // Update state with top users
+        setTopUsers(data); 
     };
-
-
-
-
-
 
 
     const handleChange = (e) => {
@@ -91,7 +85,7 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { firstName, phoneNumber, email, password } = formData;
+        const { firstName, email, password } = formData;
 
         const { data, error: signUpError } = await supabase.auth.signUp({
             email,
@@ -109,7 +103,6 @@ function Signup() {
                 {
                     id: user.id,
                     first_name: firstName,
-                    // phone_number: phoneNumber,
                     email,
                 },
             ]);

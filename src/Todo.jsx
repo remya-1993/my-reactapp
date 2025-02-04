@@ -107,7 +107,6 @@ function TodoApp() {
 
             let coinBonus = 0;
 
-            // Assign coin bonus based on task priority
             if (task.priority === "high") {
                 coinBonus = 40;
             } else if (task.priority === "medium") {
@@ -116,37 +115,34 @@ function TodoApp() {
                 coinBonus = 10;
             }
 
-            // Clone tasks array and toggle completion status
             const updatedTasks = [...tasks];
-            const isTaskCompleted = !task.completed; // Toggle completion status
+            const isTaskCompleted = !task.completed; 
             updatedTasks[taskIndex].completed = isTaskCompleted;
             updatedTasks.sort((a, b) => {
                 const priorityOrder = { high: 1, medium: 2, low: 3 };
-                const now = new Date(); // Get current date and time
+                const now = new Date(); 
 
-                // Convert task due dates to Date objects
+            
                 const dueDateA = new Date(a.dueDate);
                 const dueDateB = new Date(b.dueDate);
                 const isOverdueA = dueDateA < now && !a.completed;
                 const isOverdueB = dueDateB < now && !b.completed;
 
-                // Prioritize overdue tasks first
                 if (isOverdueA !== isOverdueB) {
                     return isOverdueA ? -1 : 1;
                 }
 
-                // Then prioritize incomplete tasks before completed ones
+                
                 if (a.completed !== b.completed) {
                     return a.completed ? 1 : -1;
                 }
 
-                // Finally, sort by priority (high -> medium -> low)
                 return priorityOrder[a.priority] - priorityOrder[b.priority];
             });
 
             setTasks(updatedTasks);
 
-            // Update task completion in Supabase
+            
             const { error: updateError } = await supabase
                 .from("tasks")
                 .update({ completed: isTaskCompleted })
@@ -157,7 +153,7 @@ function TodoApp() {
                 return;
             }
 
-            // Fetch current user's coin balance
+          
             const { data: userData, error: coinsError } = await supabase
                 .from("users")
                 .select("coins")
@@ -170,8 +166,7 @@ function TodoApp() {
                 return;
             }
 
-            // Ensure userData exists and has at least one record
-
+      
             if (!userData || userData.length === 0) {
                 console.warn("User not found, inserting default user with 0 coins.");
                 const { error: insertError } = await supabase
@@ -184,21 +179,19 @@ function TodoApp() {
                 }
             }
 
-            let newCoins = userData[0]?.coins || 0; // Ensure newCoins is always a number
+            let newCoins = userData[0]?.coins || 0; 
 
-            // Add or remove coins based on task completion status
             if (isTaskCompleted) {
                 newCoins += coinBonus;
                 console.log(`✅ Task completed! New coin balance: ${newCoins}`);
                 alert(`🎉 You have earned ${coinBonus} coins!`);
             } else {
                 newCoins -= coinBonus;
-                if (newCoins < 0) newCoins = 0; // Prevent negative coins
+                if (newCoins < 0) newCoins = 0; 
                 console.log(`❌ Task unchecked! New coin balance: ${newCoins}`);
                 alert(`⚠️ You have lost ${coinBonus} coins.`);
             }
 
-            // Update coins in Supabase
             const { error: coinsUpdateError } = await supabase
                 .from("users")
                 .update({ coins: newCoins })
@@ -209,7 +202,6 @@ function TodoApp() {
                 return;
             }
 
-            // Update local storage and state
             localStorage.setItem("userCoins", newCoins.toString());
             setCoins(newCoins);
 
