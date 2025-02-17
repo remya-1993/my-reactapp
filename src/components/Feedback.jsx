@@ -44,7 +44,6 @@ function Feedbackform() {
             alert("Feedback submitted successfully!");
         }
 
-        // Clear input fields
         setName('');
         setEmail('');
         setMessage('');

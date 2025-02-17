@@ -11,11 +11,12 @@ function TodoApp() {
     const [editIndex, setEditIndex] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [userEmail, setUserEmail] = useState('');
-    // const [userName, setUserName] = useState('');
     const [priority, setPriority] = useState('medium');
     const [coins, setCoins] = useState(0);
 
     useEffect(() => {
+
+
         const fetchUserData = async () => {
             const loggedInUser = JSON.parse(localStorage.getItem('supabaseUser'));
 
@@ -24,7 +25,7 @@ function TodoApp() {
 
                 setCoins(Number(localStorage.getItem('userCoins')) || 0);
 
-                // Fetch the latest coin balance from Supabase
+
                 const { data: userData, error: userError } = await supabase
                     .from('users')
                     .select('coins')
@@ -33,13 +34,13 @@ function TodoApp() {
 
                 if (!userError) {
                     const updatedCoins = userData?.coins || 0;
-                    setCoins(updatedCoins); // Update state with correct coins
-                    localStorage.setItem('userCoins', updatedCoins.toString()); // Store in localStorage
+                    setCoins(updatedCoins);
+                    localStorage.setItem('userCoins', updatedCoins.toString());
                 } else {
                     // console.error('Error fetching coins:', userError.message);
                 }
 
-                // Fetch tasks
+
                 const { data: tasksFromDB, error: taskError } = await supabase
                     .from('tasks')
                     .select('*')
@@ -67,7 +68,7 @@ function TodoApp() {
             const loggedInUser = JSON.parse(localStorage.getItem('supabaseUser'));
 
             if (loggedInUser) {
-                // setUserName(loggedInUser.user_metadata?.firstName);
+
                 setUserEmail(loggedInUser.email);
                 const storedTasks = JSON.parse(localStorage.getItem(`tasks-${loggedInUser.email}`)) || [];
                 setTasks(storedTasks);
@@ -116,13 +117,13 @@ function TodoApp() {
             }
 
             const updatedTasks = [...tasks];
-            const isTaskCompleted = !task.completed; 
+            const isTaskCompleted = !task.completed;
             updatedTasks[taskIndex].completed = isTaskCompleted;
             updatedTasks.sort((a, b) => {
                 const priorityOrder = { high: 1, medium: 2, low: 3 };
-                const now = new Date(); 
+                const now = new Date();
 
-            
+
                 const dueDateA = new Date(a.dueDate);
                 const dueDateB = new Date(b.dueDate);
                 const isOverdueA = dueDateA < now && !a.completed;
@@ -132,7 +133,7 @@ function TodoApp() {
                     return isOverdueA ? -1 : 1;
                 }
 
-                
+
                 if (a.completed !== b.completed) {
                     return a.completed ? 1 : -1;
                 }
@@ -142,7 +143,7 @@ function TodoApp() {
 
             setTasks(updatedTasks);
 
-            
+
             const { error: updateError } = await supabase
                 .from("tasks")
                 .update({ completed: isTaskCompleted })
@@ -153,7 +154,7 @@ function TodoApp() {
                 return;
             }
 
-          
+
             const { data: userData, error: coinsError } = await supabase
                 .from("users")
                 .select("coins")
@@ -166,7 +167,7 @@ function TodoApp() {
                 return;
             }
 
-      
+
             if (!userData || userData.length === 0) {
                 console.warn("User not found, inserting default user with 0 coins.");
                 const { error: insertError } = await supabase
@@ -179,7 +180,7 @@ function TodoApp() {
                 }
             }
 
-            let newCoins = userData[0]?.coins || 0; 
+            let newCoins = userData[0]?.coins || 0;
 
             if (isTaskCompleted) {
                 newCoins += coinBonus;
@@ -187,7 +188,7 @@ function TodoApp() {
                 alert(`🎉 You have earned ${coinBonus} coins!`);
             } else {
                 newCoins -= coinBonus;
-                if (newCoins < 0) newCoins = 0; 
+                if (newCoins < 0) newCoins = 0;
                 console.log(`❌ Task unchecked! New coin balance: ${newCoins}`);
                 alert(`⚠️ You have lost ${coinBonus} coins.`);
             }
@@ -225,7 +226,6 @@ function TodoApp() {
         if (todo && date) {
             if (editIndex !== null) {
                 const updatedTask = { ...tasks[editIndex], text: todo, date, priority };
-
 
                 const { error } = await supabase
                     .from('tasks')
@@ -381,16 +381,17 @@ function TodoApp() {
                                         >
                                             <div>
                                                 <div className='flex gap-4'>
-                                                    <input
-                                                        className='checkbox'
-                                                        type="checkbox"
-                                                        checked={task.completed}
-                                                        onChange={() => handleTaskCompletion(index)}
-                                                    />
+                                                    
                                                     <p className='text-white'>
                                                         {task.text} - {new Date(task.date).toLocaleDateString()}
                                                         {new Date(task.date) < new Date() && !task.completed && <span className="warning"> ⚠️ Overdue!</span>}
                                                     </p>
+                                                    <input
+                                                        className='checkbox g-4'
+                                                        type="checkbox"
+                                                        checked={task.completed}
+                                                        onChange={() => handleTaskCompletion(index)}
+                                                    />
                                                 </div>
 
                                                 <div className='task_feature'>
@@ -405,21 +406,22 @@ function TodoApp() {
                                                             <i className="text-white trash fa-solid fa-trash"></i>
                                                         </button>
                                                     </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                     ))
                                 ) : (
-                        <p className="text-center text-gray-600">No tasks available.</p>
+                                    <p className="text-center text-gray-600">No tasks available.</p>
                                 )}
-                    </div>
+                            </div>
                         )}
 
+                    </div>
+
+
                 </div>
-
-
             </div>
-        </div>
         </div >
     );
 }
